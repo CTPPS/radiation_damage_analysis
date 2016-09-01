@@ -34,7 +34,7 @@ void LineParser(ifstream& file_to_parse, vector<string>& lines)
 		string line;
 		getline(file_to_parse, line);
 
-		if (line[0] != '#')
+		if (line[0] != '#' && line.size() > 0)
 			lines.push_back(line);
 	}
 }
