@@ -33,7 +33,9 @@ void LineParser(ifstream& file_to_parse, vector<string>& lines)
 
 		string line;
 		getline(file_to_parse, line);
-		lines.push_back(line);
+
+		if (line[0] != '#')
+			lines.push_back(line);
 	}
 }
 
@@ -49,9 +51,9 @@ void CSVLinesParser(vector<string> lines, vector<vector<string>> &spreadsheet)
 		{
 			spreadsheet.push_back(vector<string>());
 	
-			while(1)
+			while (true)
 			{
-				getline(linestream,field_content,',');
+				getline(linestream, field_content, ',');
 				spreadsheet.back().push_back(field_content);
 				if (linestream.eof())
 					break;
