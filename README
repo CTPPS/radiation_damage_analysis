@@ -1,0 +1,47 @@
+******************************RDAnalysis.C README******************************
+
+This file explains how to run the RDAnalysis.C root macro and its
+prerequisites.
+
+The macro analyses the radiation damage on the silicon strips detector
+by running on the DQM files. The DQM files can be produced with the 
+DQM_maker and should be saved in the "Runs" folder, with the name 
+"DQM_V0001_CTPPS_R000$runID.root", where $runID is a six digit number that
+identifies the CMS run number. Information about using the DQM_maker and
+his prerequisites are included in a README file in the DQM_maker folder.
+
+The second prerequisite is the run information file, called "runinfo.csv".
+To produce this file one has to connect to "https://cmswbm.web.cern.ch/cmswbm/"
+(CERN CA/GRID certificates and VOMS authorizations are required). Then look for
+"Run Summary", tick the "CTPPS_TOT" field in "Components Online Status" and 
+select the the Begin RunNumber and EndRunNumber. The former being the first 
+$runID after the installation of the detector, the latter being the last run
+to analyse. Click on submit query then click and drag on the whole page, 
+starting from the label "RUN" and going down to the bottom right corner and 
+copy. Open a spreadsheet and use the "special paste" function (right click 
+menu), to paste everything starting from the top left corner. Split then the 
+second column (LUMI_NB_LIVE_DELIV) in two, by adding a column on the right and
+using the "text to column" function (ref. libreoffice), to separate the live
+delivered integrated luminosity from the NB one. 
+Save then the file into "runinfo.csv". Check also that runinfo doesn't have an
+empty line at the end, since it could cause crashes.
+
+Edit the RDAnalysis.C, adding to "certainruns[]" the runs to be analysed and
+plotted (use runs with many tracks, more than 10000 should be enough). Add to
+excludedruns[] the runs with the pots active but not deployed, in this way 
+their integrated luminosity isn't added to the count for the detector.
+
+Run the macro by opening a terminal, changing directory to the one where 
+RDAnalysis.C is located and then typing "root -l RDAnalysis.C". The plots 
+should be almost immediately shown on screen.
+
+As alignment run the file used is "10082_EVB15_2_ntuple.root" and the values of
+the parameter are hardcoded RDAnalysis.C in the TF1 objects definitions. 
+Commands for getting the parameter values from similar ntuples are saved in 
+"alignment_cmds", located in the RDAnalysis directory.
+
+The code has been tested with the root 6.06/06 release. 
+
+(Ask me if more information is needed)
+
+*******************************************************************************
