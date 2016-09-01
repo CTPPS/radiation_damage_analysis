@@ -31,8 +31,8 @@ unsigned int excludedruns[] = {274100,274102,274103,274104,274105,274106,274107,
   274251,274314,274315,274316,274317,274318,274319,274335,274336,274337,274338,274339,274344,274345,274382,274966,275326};
   //runs with data, without pots insertion (read from fillreport)
 
-const int ncertainruns = sizeof(certainruns)/sizeof(double);
-const int nexcludedruns = sizeof(excludedruns)/sizeof(double);
+const int ncertainruns = sizeof(certainruns)/sizeof(unsigned int);
+const int nexcludedruns = sizeof(excludedruns)/sizeof(unsigned int);
 
 vector <double> luminosities_int(ncertainruns,0);
 vector <double> ycertainruns_nr_rp(ncertainruns,0);
@@ -214,7 +214,7 @@ int main()
   gr1->Draw("AP");
   l1->Draw("same");
 
-  c1->Write("c1");
+  c1->Write("45_210_nr_hr, lumi");
   
   TCanvas *c2 = new TCanvas("c2","RDAnalysis_rp_45_210_fr_hr",700,500);
   c2->SetGrid();
@@ -232,7 +232,7 @@ int main()
   gr2->Draw("AP");
   l2->Draw("same");
   
-  c2->Write("c2");
+  c2->Write("45_210_fr_hr, lumi");
   
 //Graphics to check if the ratio between reference area hits and events per bunch crossing is constant
   TCanvas *check_ref_area = new TCanvas("check_ref_area","rp_45_210");
@@ -258,7 +258,7 @@ int main()
   check_ref_area_nr->GetYaxis()->SetTitleOffset(1.6);
   check_ref_area_nr->Draw("AP");
 
-  check_ref_area->Write("check_ref_area");
+  check_ref_area->Write("45_210, check_ref_area");
   
   TCanvas *c1_time = new TCanvas("c1_time","RDAnalysis_rp_45_210_nr_hr_time",700,500);
   c1_time->SetGrid();
@@ -276,7 +276,7 @@ int main()
   gr1_time_start->Draw("AP");
   l1_time->Draw("same");
 
-  c1_time->Write("c1_time");
+  c1_time->Write("45_210_nr_hr, time");
   
   TCanvas *c2_time = new TCanvas("c2_time","RDAnalysis_rp_45_210_fr_hr_time",700,500);
   c2_time->SetGrid();
@@ -295,7 +295,7 @@ int main()
   gr2_time->Draw("AP");
   l2_time->Draw("same");
 
-  c2_time->Write("c2_time");
+  c2_time->Write("45_210_fr_hr, time");
   
 //   calculates parameter for the 56 nr rp with all the "good" runs
 // cout << ncertainruns << endl;
@@ -410,7 +410,7 @@ int main()
   gr3->Draw("AP");  
   l3->Draw("same");
 
-  c3->Write("c3");
+  c3->Write("56_210_nr_hr, lumi");
   
   TCanvas *c4 = new TCanvas("c4","RDAnalysis_rp_56_210_fr_hr",700,500);
   c4->SetGrid();
@@ -426,7 +426,7 @@ int main()
   gr4->Draw("AP");
   l4->Draw("same");
 
-  c4->Write("c4");
+  c4->Write("56_210_fr_hr, lumi");
   
 //Graphics to check if the ratio between reference area hits and events per bunch crossing is constant
   TCanvas *check_ref_area1 = new TCanvas("check_ref_area1","rp_56_210");
@@ -453,7 +453,7 @@ int main()
   check_ref_area1_nr->GetYaxis()->SetTitleOffset(1.6);
   check_ref_area1_nr->Draw("AP");
 
-  check_ref_area1->Write("check_ref_area1");
+  check_ref_area1->Write("56_210, check_ref_area");
   
   TCanvas *c3_time = new TCanvas("c3_time","RDAnalysis_rp_56_210_nr_hr_time",700,500);
   c3_time->SetGrid();
@@ -471,7 +471,7 @@ int main()
   gr3_time->Draw("AP");
   l3_time->Draw("same");
 
-  c3_time->Write("c3_time");
+  c3_time->Write("56_210_nr_hr, time");
   
   TCanvas *c4_time = new TCanvas("c4_time","RDAnalysis_rp_56_210_fr_hr_time",700,500);
   c4_time->SetGrid();
@@ -489,7 +489,7 @@ int main()
   gr4_time->Draw("AP");
   l4_time->Draw("same");
 
-  c4_time->Write("c4_time");
+  c4_time->Write("56_210_fr_hr, time");
 
   delete f_out;
 
