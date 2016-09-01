@@ -22,15 +22,18 @@
 
 using namespace std;
 
-double certainruns[] = {273725,273728,274094,274172,274198,274199,274200,274241,274244,274284,274286,274387,274388,274422,274440,274441,
+unsigned int certainruns[] = {273725,273728,274094,274172,274198,274199,274200,274241,274244,274284,274286,274387,274388,274422,274440,274441,
   274442,274443,274955,274958,274968,274969,274970,274969,274999,275000,275001,275066,275074,275124,275125,275282,275283,275290,275292,275293,275309,
   275310,275311,275319,275338,275344,275345,275370,275371,275375,275376,275768,275772,275774,275776,275777,275778,275782,275783,275828,275829,
   275832,275833,275834,275836,275837,275847,275890,275911,275912,275913,275918,275920}; 
   //runs with pots insertion that you want to analyze
-double excludedruns[] = {274100,274102,274103,274104,274105,274106,274107,274108,274142,274146,274157,274159,274160,274161,274250,
+unsigned int excludedruns[] = {274100,274102,274103,274104,274105,274106,274107,274108,274142,274146,274157,274159,274160,274161,274250,
   274251,274314,274315,274316,274317,274318,274319,274335,274336,274337,274338,274339,274344,274345,274382,274966,275326};
   //runs with data, without pots insertion (read from fillreport)
+
 const int ncertainruns = sizeof(certainruns)/sizeof(double);
+const int nexcludedruns = sizeof(excludedruns)/sizeof(double);
+
 vector <double> luminosities_int(ncertainruns,0);
 vector <double> ycertainruns_nr_rp(ncertainruns,0);
 vector <double> ycertainruns_fr_rp(ncertainruns,0);
@@ -50,32 +53,54 @@ int main()
 {
 	TFile *f_out = new TFile("output.root", "recreate");
   
-  ifstream input_file("runinfo.csv");
-  vector<string> lines;
-  vector<vector<string> > fields;
-  LineParser(input_file,lines);
-  CSVLinesParser(lines,fields);
+	ifstream input_file("runinfo.csv");
+	vector<string> lines;
+	vector<vector<string>> fields;
+	LineParser(input_file, lines);
+	CSVLinesParser(lines, fields);
 
-  sort(certainruns,certainruns+ncertainruns);
-  sort(excludedruns,excludedruns+sizeof(excludedruns)/sizeof(double));
-  for (int i=0;i<ncertainruns;++i){
-    double temp_sum_luminosities_int=0;
-    for(vector<vector<string> >::reverse_iterator it=fields.rbegin();it!=fields.rend()-1;++it){
-      temp_sum_luminosities_int+=atof((*it).at(2).c_str())/1000000;
-      for (int j=0;j<sizeof(excludedruns)/sizeof(double);++j){
-	if(atof((*it).at(0).c_str())==excludedruns[j]){
-      temp_sum_luminosities_int-=atof((*it).at(2).c_str())/1000000;	  
+	sort(certainruns, certainruns+ncertainruns);
+	sort(excludedruns, excludedruns+nexcludedruns);
+
+	for (int i = 0; i < ncertainruns; ++i)
+	{
+		double temp_sum_luminosities_int=0;
+		for(vector<vector<string>>::reverse_iterator lit = fields.rbegin(); lit != fields.rend(); ++lit)
+		{
+			if (lit->size() < 8)
+			{
+				printf("ERROR: less than 8 fields on the line. Skipping.\n");
+				continue;
+			}
+
+			unsigned int f_run = atoi(lit->at(0).c_str());
+			double f_lumi = atof(lit->at(2).c_str()) / 1000000;
+
+			TDatime datetime(atoi(lit->at(7).substr(0,4).c_str()), atoi(lit->at(7).substr(5,2).c_str()),
+				atoi(lit->at(7).substr(8,2).c_str()), atoi(lit->at(7).substr(11,2).c_str()),
+				atoi(lit->at(7).substr(14,2).c_str()), atoi(lit->at(7).substr(17,2).c_str()));
+
+			bool runToExclude = false;
+			for (unsigned int er : excludedruns)
+			{
+				if (f_run == er)
+				{
+					runToExclude = true;
+					break;
+				}
+			}
+
+			if (!runToExclude)
+				temp_sum_luminosities_int += f_lumi;
+
+			if (f_run == certainruns[i])
+			{
+				luminosities_int[i] = temp_sum_luminosities_int;
+				datimes[i] = datetime;
+				start_times[i] = datimes[i].Convert();
+			}
+		}
 	}
-      }
-      if(atof((*it).at(0).c_str())==certainruns[i]){
-	luminosities_int.at(i)=temp_sum_luminosities_int;
-	datimes.at(i)=TDatime(atoi((*it).at(7).substr(0,4).c_str()),atoi((*it).at(7).substr(5,2).c_str()),atoi((*it).at(7).substr(8,2).c_str()),atoi((*it).at(7).substr(11,2).c_str()),atoi((*it).at(7).substr(14,2).c_str()),atoi((*it).at(7).substr(17,2).c_str())); 
-	start_times.at(i)=datimes.at(i).Convert();
-// 	datimes.at(i)=TDatime(atoi((*it).at(8).substr(0,4).c_str()),atoi((*it).at(8).substr(5,2).c_str()),atoi((*it).at(8).substr(8,2).c_str()),atoi((*it).at(8).substr(11,2).c_str()),atoi((*it).at(8).substr(14,2).c_str()),atoi((*it).at(8).substr(17,2).c_str())); 
-// 	stop_times.at(i)=datimes.at(i).Convert();
-      }
-    }
-  }
   
   for (int i=0;i<ncertainruns;i++){
     stringstream ss;
