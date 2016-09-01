@@ -1,4 +1,7 @@
 *.root
+*.swp
+*.swo
+*.pdf
 
 RDAnalysis
 

@@ -1,7 +1,0 @@
-To get the plot, opening a TBrowser is more convenient, in order to see the bin numbers:
-((TTree*) _file0->Get("TotemNtuple;9"))->Draw("track_rp_2.y:track_rp_2.x>>hprova(100,-3,33,100,-18,18)","track_rp_2.valid==1","colz");
-Substitute to $* min and max values of the area you want to integrate on, high values bins are excluded:
-double num,den;
-for (int binx=$SELECTEDXLOW;binx<$SELECTEDXHIGH;binx++){for(int biny=$SELECTEDYLOW;biny<$SELECTEDYHIGH;biny++){num+=hprova->GetBinContent(binx,biny);}}
-for (int binx=$REFERENCEXLOW;binx<$REFERENCEXHIGH;binx++){for(int biny=$REFERENCEYLOW;biny<$REFERENCEYHIGH;biny++){den+=hprova->GetBinContent(binx,biny);}}
-num/den
