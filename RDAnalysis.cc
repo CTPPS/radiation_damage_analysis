@@ -22,14 +22,28 @@
 
 using namespace std;
 
+// runs with pots insertion that you want to analyze
 unsigned int certainruns[] = {273725,273728,274094,274172,274198,274199,274200,274241,274244,274284,274286,274387,274388,274422,274440,274441,
   274442,274443,274955,274958,274968,274969,274970,274969,274999,275000,275001,275066,275074,275124,275125,275282,275283,275290,275292,275293,275309,
   275310,275311,275319,275338,275344,275345,275370,275371,275375,275376,275768,275772,275774,275776,275777,275778,275782,275783,275828,275829,
-  275832,275833,275834,275836,275837,275847,275890,275911,275912,275913,275918,275920}; 
-  //runs with pots insertion that you want to analyze
+  275832,275833,275834,275836,275837,275847,275890,275911,275912,275913,275918,275920,
+279766,
+279794,
+279823,
+279841,
+279849,
+279931,
+279966,
+279975,
+280018,
+280191,
+280330,
+280385
+}; 
+
+// runs with data, without pots insertion (read from fillreport)
 unsigned int excludedruns[] = {274100,274102,274103,274104,274105,274106,274107,274108,274142,274146,274157,274159,274160,274161,274250,
   274251,274314,274315,274316,274317,274318,274319,274335,274336,274337,274338,274339,274344,274345,274382,274966,275326};
-  //runs with data, without pots insertion (read from fillreport)
 
 const int ncertainruns = sizeof(certainruns)/sizeof(unsigned int);
 const int nexcludedruns = sizeof(excludedruns)/sizeof(unsigned int);
@@ -264,7 +278,7 @@ int main()
   c1_time->SetGrid();
   c1_time->SetLogy();
   TGraphErrors *gr1_time_start = new TGraphErrors(ncertainruns,&(start_times[0]),&(ycertainruns_nr_rp[0]),NULL,&(eycertainruns_nr_rp[0]));
-  TF1 *l1_time = new TF1("l1_time","51.9391304",start_times.front(),start_times.back());
+  TF1 *l1_time = new TF1("ref","51.9391304",start_times.front(),start_times.back());
   gr1_time_start->SetMarkerStyle(21);
   gr1_time_start->SetMarkerSize(0.6);
   gr1_time_start->SetTitle("RDAnalysis_rp_45_210_nr_hr");
@@ -282,7 +296,7 @@ int main()
   c2_time->SetGrid();
   c2_time->SetLogy();
   TGraphErrors *gr2_time = new TGraphErrors(ncertainruns,&(start_times[0]),&(ycertainruns_fr_rp[0]),NULL,&(eycertainruns_fr_rp[0]));
-  TF1 *l2_time = new TF1("l2","55.1898",start_times.front(),start_times.back());  
+  TF1 *l2_time = new TF1("ref","55.1898",start_times.front(),start_times.back());  
   gr2_time->SetMarkerStyle(21);
   gr2_time->SetMarkerSize(0.6);
   gr2_time->SetMaximum(65.);
@@ -401,7 +415,7 @@ int main()
   c3->SetLogy();
 //   TGraphErrors *gr3 = new TGraphErrors(ncertainruns,certainruns,&(ycertainruns_nr_rp[0]),NULL,&(eycertainruns_nr_rp[0]));
   TGraphErrors *gr3 = new TGraphErrors(ncertainruns,&(luminosities_int[0]),&(ycertainruns_nr_rp[0]),NULL,&(eycertainruns_nr_rp[0]));
-  TF1 *l3 = new TF1("l3","13.8614",0,7);
+  TF1 *l3 = new TF1("ref","13.8614",0,7);
   gr3->SetMarkerStyle(21);
   gr3->SetMarkerSize(0.6);  
   gr3->SetTitle("RDAnalysis_rp_56_210_nr_hr");
@@ -417,7 +431,7 @@ int main()
   c4->SetLogy();
 //   TGraphErrors *gr4 = new TGraphErrors(ncertainruns,certainruns,&(ycertainruns_fr_rp[0]),NULL,&(eycertainruns_fr_rp[0]));   
   TGraphErrors *gr4 = new TGraphErrors(ncertainruns,&(luminosities_int[0]),&(ycertainruns_fr_rp[0]),NULL,&(eycertainruns_fr_rp[0]));   
-  TF1 *l4 = new TF1("l4","15.1518",0,7);
+  TF1 *l4 = new TF1("ref","15.1518",0,7);
   gr4->SetMarkerStyle(21);
   gr4->SetMarkerSize(0.6);
   gr4->SetTitle("RDAnalysis_rp_56_210_fr_hr");
@@ -459,7 +473,7 @@ int main()
   c3_time->SetGrid();
   c3_time->SetLogy();
   TGraphErrors *gr3_time = new TGraphErrors(ncertainruns,&(start_times[0]),&(ycertainruns_nr_rp[0]),NULL,&(eycertainruns_nr_rp[0]));
-  TF1 *l3_time = new TF1("l3_time","13.8614",start_times.front(),start_times.back());
+  TF1 *l3_time = new TF1("ref","13.8614",start_times.front(),start_times.back());
   gr3_time->SetMarkerStyle(21);
   gr3_time->SetMarkerSize(0.6);
   gr3_time->SetTitle("RDAnalysis_rp_56_210_nr_hr");
@@ -477,7 +491,7 @@ int main()
   c4_time->SetGrid();
   c4_time->SetLogy();
   TGraphErrors *gr4_time = new TGraphErrors(ncertainruns,&(start_times[0]),&(ycertainruns_fr_rp[0]),NULL,&(eycertainruns_fr_rp[0]));
-  TF1 *l4_time = new TF1("l3_time","15.1518",start_times.front(),start_times.back());
+  TF1 *l4_time = new TF1("ref","15.1518",start_times.front(),start_times.back());
   gr4_time->SetMarkerStyle(21);
   gr4_time->SetMarkerSize(0.6);
   gr4_time->SetTitle("RDAnalysis_rp_56_210_fr_hr");
